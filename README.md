@@ -1,82 +1,47 @@
 # kube-pod-rightsizer
 
-watches your kubernetes pods and tells you which ones are wasting resources.
+Kubernetes controller that analyzes pod resource usage and recommends right-sizing. Compares actual metrics against requests and logs savings opportunities.
 
-## why
+Read-only - observes and reports, doesn't modify anything.
 
-i got tired of seeing pods with 1Gi memory requests using 50Mi. this thing compares what pods actually use vs what they request and spits out recommendations.
-
-it doesn't change anything - just watches and logs.
-
-## quick start
-
-needs metrics-server in your cluster.
-
-```bash
-# if you're on kind
-kind create cluster
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
-
-# deploy
-kubectl apply -f deploy/
-```
-
-or helm:
-
-```bash
-helm install kube-pod-rightsizer ./charts/kube-pod-rightsizer -n kube-pod-rightsizer --create-namespace
-```
-
-## building
+## Building
 
 ```bash
 go build -o kube-pod-rightsizer ./cmd
 ```
 
-docker:
+## Running
+
+Requires metrics-server in your cluster.
 
 ```bash
-docker build -t kube-pod-rightsizer:latest .
+./kube-pod-rightsizer
 ```
 
-## config
+## Config
 
-env vars:
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SCAN_INTERVAL` | 30s | How often to analyze pods |
+| `NAMESPACES` | all | Comma separated list |
+| `LOG_LEVEL` | info | debug/info/warn/error |
 
-- `SCAN_INTERVAL` - default 30s
-- `NAMESPACES` - comma separated, empty = all namespaces
-- `LOG_LEVEL` - debug/info/warn/error
+## How it works
 
-## how it works
+1. Fetches pod metrics from metrics-server
+2. Compares usage against resource requests
+3. Logs recommendations for over-provisioned pods
 
-every 30s (or whatever you set):
-1. grabs metrics from metrics-server
-2. compares against pod requests
-3. if usage is way below requests, logs a recommendation
+Recommendations include 20% buffer as safety margin.
 
-adds 20% buffer to recommendations so you don't cut it too close.
-
-## output looks like
+## Output
 
 ```
 INF recommendation pod=nginx-xyz namespace=default current_cpu=500m recommended_cpu=60m cpu_savings=88%
 ```
 
-## structure
+## Todo
 
-```
-cmd/main.go              - entrypoint
-internal/controller/     - main loop
-internal/metrics/        - talks to metrics-server
-internal/recommender/    - calculates recommendations
-deploy/                  - k8s manifests
-charts/                  - helm
-```
-
-## todo
-
-- [ ] prometheus metrics endpoint
-- [ ] webhook for slack/teams notifications
-- [ ] historical data tracking
-
+- [ ] Dockerfile and k8s manifests
+- [ ] Helm chart
+- [ ] Prometheus metrics endpoint
