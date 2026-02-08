@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kube-pod-rightsizer
+  namespace: kube-pod-rightsizer
+  labels:
+    app.kubernetes.io/name: kube-pod-rightsizer
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kube-pod-rightsizer
+  endpoints:
+    - port: http
+      interval: 30s
+      path: /metrics
