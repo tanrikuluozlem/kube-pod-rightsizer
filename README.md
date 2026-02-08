@@ -52,6 +52,6 @@ Recommendations include 20% buffer as safety margin.
 INF recommendation pod=nginx-xyz namespace=default current_cpu=500m recommended_cpu=60m cpu_savings=88%
 ```
 
-## Todo
+## Metrics
 
-- [ ] Prometheus metrics endpoint
+`/metrics` endpoint for Prometheus scraping.
