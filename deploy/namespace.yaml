@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rightsizer-system
+  labels:
+    app.kubernetes.io/name: kube-pod-rightsizer
+    app.kubernetes.io/component: namespace
