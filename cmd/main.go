@@ -100,6 +100,8 @@ func startHealthServer() {
 		_, _ = w.Write([]byte("ok"))
 	})
 
+	mux.Handle("/metrics", metrics.Handler())
+
 	server := &http.Server{
 		Addr:    ":8080",
 		Handler: mux,

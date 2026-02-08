@@ -103,6 +103,8 @@ func (c *Controller) analyzePod(pod corev1.Pod, metricsMap map[string]metrics.Po
 		}
 	}
 
+	metrics.IncPodsAnalyzed()
+
 	// run analysis
 	result := recommender.Analyze(recommender.PodResources{
 		Name:            pod.Name,
@@ -115,6 +117,10 @@ func (c *Controller) analyzePod(pod corev1.Pod, metricsMap map[string]metrics.Po
 
 	// log recommendation if found
 	if result != nil {
+		metrics.IncRecommendations()
+		metrics.SetCPUSavings(pod.Namespace, pod.Name, float64(result.CPUSavings))
+		metrics.SetMemorySavings(pod.Namespace, pod.Name, float64(result.MemorySavings))
+
 		log.Printf("RECOMMENDATION: %s/%s - CPU: %dm -> %dm (save %d%%), Memory: %dMi -> %dMi (save %d%%)",
 			result.Namespace,
 			result.PodName,
