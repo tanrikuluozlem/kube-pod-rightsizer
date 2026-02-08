@@ -18,6 +18,18 @@ Requires metrics-server in your cluster.
 ./kube-pod-rightsizer
 ```
 
+## Deploy
+
+```bash
+kubectl apply -f deploy/
+```
+
+## Helm
+
+```bash
+helm install kube-pod-rightsizer ./charts/kube-pod-rightsizer -n kube-pod-rightsizer --create-namespace
+```
+
 ## Config
 
 | Variable | Default | Description |
@@ -42,6 +54,4 @@ INF recommendation pod=nginx-xyz namespace=default current_cpu=500m recommended_
 
 ## Todo
 
-- [ ] Dockerfile and k8s manifests
-- [ ] Helm chart
 - [ ] Prometheus metrics endpoint
