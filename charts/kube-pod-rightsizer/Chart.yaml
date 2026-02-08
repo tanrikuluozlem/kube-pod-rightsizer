@@ -1,0 +1,17 @@
+apiVersion: v2
+name: kube-pod-rightsizer
+description: Detect over-provisioned pods and get resource optimization recommendations
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - kubernetes
+  - cost-optimization
+  - resource-management
+  - finops
+home: https://github.com/ozlemtanrikulu/kube-pod-rightsizer
+sources:
+  - https://github.com/ozlemtanrikulu/kube-pod-rightsizer
+maintainers:
+  - name: Ozlem Tanrikulu
+    url: https://github.com/ozlemtanrikulu
