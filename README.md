@@ -20,6 +20,12 @@ Requires metrics-server in your cluster.
 ./kube-pod-rightsizer
 ```
 
+## Quick Start
+
+```bash
+docker pull ghcr.io/tanrikuluozlem/kube-pod-rightsizer:v0.1.0
+```
+
 ## Deploy
 
 ```bash
