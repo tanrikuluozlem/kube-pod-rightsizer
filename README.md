@@ -1,5 +1,7 @@
 # kube-pod-rightsizer
 
+![CI](https://github.com/tanrikuluozlem/kube-pod-rightsizer/actions/workflows/ci.yaml/badge.svg)
+
 Kubernetes controller that analyzes pod resource usage and recommends right-sizing. Compares actual metrics against requests and logs savings opportunities.
 
 Read-only - observes and reports, doesn't modify anything.
